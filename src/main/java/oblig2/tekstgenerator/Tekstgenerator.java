@@ -13,11 +13,12 @@ import java.util.Scanner;
 
 public class Tekstgenerator extends Application {
     LinkedHashMap<Ordsamling,Integer> ordTab;
+    HashMap<String[], Integer> testMap = new HashMap<>();
     // ord som indeks, plusse på talla
     @Override
     public void start(Stage stage) throws IOException {
         Pane pane = new Pane();
-        Scanner sc = new Scanner(new URL("https://www.vg.no/nyheter/innenriks/i/76Ov8W/lysbakken-stadig-mer-alvorlig-for-solberg").openStream());
+       // Scanner sc = new Scanner(new URL("https://www.vg.no/nyheter/innenriks/i/76Ov8W/lysbakken-stadig-mer-alvorlig-for-solberg").openStream());
 /*
 
         String inputLine;
@@ -38,7 +39,7 @@ public class Tekstgenerator extends Application {
 */
 
 
-
+        hentTekst();
         Scene scene = new Scene(pane, 320, 240);
         stage.setTitle("Oblig 2 - Tekstgenerator");
         stage.setScene(scene);
@@ -48,6 +49,11 @@ public class Tekstgenerator extends Application {
     public void hentTekst(){
         try {
             Scanner leser = new Scanner(new File("src/main/resources/oblig2/tekstgenerator/historie.txt"));
+            // Finner de to første ordene
+            String ord1 = leser.next();
+            String ord2 = leser.next();
+            rekursiv(leser, ord1, ord2);
+            /*
            //String ord;
             String ord1;
             String ord2;
@@ -71,7 +77,11 @@ public class Tekstgenerator extends Application {
                // ord = leser.next();
                // System.out.println(ord);
             }
+
+             */
             leser.close();
+
+            //System.out.println(testMap.toString()); //
         }catch (FileNotFoundException e){
             System.out.println("feil " + e);
         }
@@ -90,9 +100,24 @@ public class Tekstgenerator extends Application {
 
     }
 
-    public void rekursiv(Ordsamling treOrd){
-        // ta de 3 orda,hent de to siste, legg til et nytt
-        //
+    /**
+     * Metoden henter tre og tre ord fra innlest fil, og legger de til i et Hashmap
+     * @param scanner
+     * @param ord1
+     * @param ord2
+     */
+    public void rekursiv(Scanner scanner, String ord1, String ord2){
+        int teller = 0;
+        if(scanner.hasNext()) {
+            String ord3;
+            String[] stringTab = new String[3];
+            stringTab[0] = ord1;
+            stringTab[1] = ord2;
+            ord3 = scanner.next();
+            testMap.put(stringTab, 1);
+            System.out.println(ord1 + " " + ord2 +  " "+ ord3);
+            rekursiv(scanner, ord2, ord3);
+        }
     }
 
     public static void main(String[] args) {
