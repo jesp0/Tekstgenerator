@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class Tekstgenerator extends Application {
     LinkedHashMap<Ordsamling,Integer> ordTab;
-    HashMap<String[], Integer> testMap = new HashMap<>();
+    HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
     // ord som indeks, plusse på talla
     @Override
     public void start(Stage stage) throws IOException {
@@ -109,14 +109,21 @@ public class Tekstgenerator extends Application {
     public void rekursiv(Scanner scanner, String ord1, String ord2){
         int teller = 0;
         if(scanner.hasNext()) {
-            String ord3;
-            String[] stringTab = new String[3];
-            stringTab[0] = ord1;
-            stringTab[1] = ord2;
-            ord3 = scanner.next();
-            testMap.put(stringTab, 1);
+            String ord3 = scanner.next();
+            switch (ord3.charAt((ord3.length()-1))){
+                case '.': break;
+                case ',': break;
+                case ';': break;
+                case ':': break;
+                case '!': break;
+                case '?': break;
+                // tell tegna så vi kan bruke sannsynlighet for å finne ut av når de skal dukke opp
+            }
+            Ordsamling ordsamling = new Ordsamling(ord1, ord2, ord3);
+            ordMap.put(ordsamling, 1);
             System.out.println(ord1 + " " + ord2 +  " "+ ord3);
             rekursiv(scanner, ord2, ord3);
+            // if last character i stringen er .;,:!?
         }
     }
 
