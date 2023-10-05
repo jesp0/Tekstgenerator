@@ -4,13 +4,20 @@ public class Ordsamling {
     protected String[] treOrd = new String[3];
     protected String[] toOrd = new String[2];
 
+    // Flytte ordMap(hasmap) hit???
+    // HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
+
     public Ordsamling(String ord1, String ord2, String ord3){
         treOrd[0] = ord1;
         treOrd[1] = ord2;
         treOrd[2] = ord3;
 
         // if de to første orda er like som et annet objekt sine to første ord, så tell denne forekomsten (sjekkk dette med å bruke compare
-        //
+        // if(ordMap.containsKey(this){
+        //  Endre value på denne keyen
+        // }Else{
+        //  ordMap.put(this, antall)
+        // }
     }
     public Ordsamling(String ord1, String ord2){
         toOrd[0] = ord1;
