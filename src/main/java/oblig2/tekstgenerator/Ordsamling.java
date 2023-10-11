@@ -11,6 +11,9 @@ public class Ordsamling {
     protected HashMap<String[], ArrayList<String>> toOrd = new HashMap<>();
 
 
+    // Flytte ordMap(hasmap) hit???
+    // HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
+
     public Ordsamling(String ord1, String ord2, String ord3){
         treOrd[0] = ord1;
         treOrd[1] = ord2;
@@ -19,7 +22,11 @@ public class Ordsamling {
 
 
         // if de to første orda er like som et annet objekt sine to første ord, så tell denne forekomsten (sjekkk dette med å bruke compare
-        //
+        // if(ordMap.containsKey(this){
+        //  Endre value på denne keyen
+        // }Else{
+        //  ordMap.put(this, antall)
+        // }
     }
 
     public Ordsamling(String[] ordTab, String ord3){
