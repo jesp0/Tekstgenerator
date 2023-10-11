@@ -6,39 +6,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class Tekstgenerator extends Application {
-    LinkedHashMap<Ordsamling,Integer> ordTab;
-    HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
-    // ord som indeks, plusse på talla
     @Override
     public void start(Stage stage) throws IOException {
         Pane pane = new Pane();
-       // Scanner sc = new Scanner(new URL("https://www.vg.no/nyheter/innenriks/i/76Ov8W/lysbakken-stadig-mer-alvorlig-for-solberg").openStream());
-/*
-
-        String inputLine;
-        while (sc.hasNextLine()) {
-            inputLine = sc.next();
-            System.out.println(inputLine);
-        }
-        sc.close();
-
-        URL yahoo = new URL("https://snl.no/Norge_i_senmiddelalderen");
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        yahoo.openStream()));
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-            System.out.println(inputLine);
-        in.close();
-*/
-
-
         hentTekst();
         Scene scene = new Scene(pane, 320, 240);
         stage.setTitle("Oblig 2 - Tekstgenerator");
@@ -48,43 +25,41 @@ public class Tekstgenerator extends Application {
 
     public void hentTekst(){
         try {
-            Scanner leser = new Scanner(new File("src/main/resources/oblig2/tekstgenerator/historie.txt"));
-            // Finner de to første ordene
+            //Scanner leser = new Scanner(new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/norskeeventyr.txt").openStream());
+            URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/norskeeventyr.txt");
+            URL url2 = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/SAS-Wikipedia.txt");
+            Scanner leser = new Scanner(new InputStreamReader(url.openStream()));
+            //leser = new Scanner(new InputStreamReader(url2.openStream()));
+            //rekursiv(leser, ord1, ord2);
+
+           //String ord;
             String ord1 = leser.next();
             String ord2 = leser.next();
-            rekursiv(leser, ord1, ord2);
-            /*
-           //String ord;
-            String ord1;
-            String ord2;
             String ord3;
             int teller = 0;
             Ordsamling treOrd;
-            while (leser.hasNextLine()) {
-                ord1 = leser.next();
-                ord2 = leser.next();
+            while (leser.hasNext()) {
                 ord3 = leser.next();
-                if(!leser.hasNext()) {
+                treOrd = new Ordsamling(ord1, ord2, ord3);
+                System.out.println(ord1 + " " + ord2 + " " + ord3);
+                ord1 = ord2;
+                ord2 = ord3;
+                //teller
+                Ordsamling.ordMap.put(treOrd, teller);
+                //Ordsamling.toOrd.put(ord1, ord2);
+
+                if(leser.hasNext()) {
                     // lag en ordsamblig
                 }else{
                     //rekursivt kall
                 }
-
-
-                treOrd = new Ordsamling(ord1,ord2,ord3);
-                ordTab.put(treOrd, teller);
-
-               // ord = leser.next();
-               // System.out.println(ord);
             }
-
-             */
             leser.close();
-
-            //System.out.println(testMap.toString()); //
         }catch (FileNotFoundException e){
             System.out.println("feil " + e);
-        }
+        }catch (IOException e){
+        System.out.println("URL feil - " + e);
+    }
     }
     public void organiserOrd(Ordsamling array){
         // Splitt 3 og 3 og legg inn i matrise
@@ -96,8 +71,6 @@ public class Tekstgenerator extends Application {
         // tre ganger, så det ligger i bufferen
         // ordsamling.toOrd(bruker konstruktøren)
         // sende inn bufferen i stedet for 2 strings
-
-
     }
 
     /**
@@ -120,8 +93,8 @@ public class Tekstgenerator extends Application {
                 // tell tegna så vi kan bruke sannsynlighet for å finne ut av når de skal dukke opp
             }
             Ordsamling ordsamling = new Ordsamling(ord1, ord2, ord3);
-            ordMap.put(ordsamling, 1);
-            System.out.println(ord1 + " " + ord2 +  " "+ ord3);
+            //OrordMap.put(ordsamling, 1);
+            //System.out.println(ord1 + " " + ord2 +  " "+ ord3);
             rekursiv(scanner, ord2, ord3);
             // if last character i stringen er .;,:!?
         }
