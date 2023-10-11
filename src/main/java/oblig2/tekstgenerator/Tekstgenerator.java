@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
@@ -24,42 +25,45 @@ public class Tekstgenerator extends Application {
     }
 
     public void hentTekst(){
-        try {
-            //Scanner leser = new Scanner(new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/norskeeventyr.txt").openStream());
-            URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/norskeeventyr.txt");
-            URL url2 = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/SAS-Wikipedia.txt");
-            Scanner leser = new Scanner(new InputStreamReader(url.openStream()));
-            //leser = new Scanner(new InputStreamReader(url2.openStream()));
-            //rekursiv(leser, ord1, ord2);
+        // Fungerer fordi alle URLene er (nesten) like
+        String[] linker = {"norskeeventyr", "SAS-Wikipedia", "straffeloven", "tusenogennatt", "vikingene", "Helsesørøst", "Norgeisenmiddelalderen"};
+        int teller = 0;
+        for(String link : linker){
+            try {
+                URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/" + link + ".txt");
+                Scanner leser = new Scanner(new InputStreamReader(url.openStream()));
 
-           //String ord;
-            String ord1 = leser.next();
-            String ord2 = leser.next();
-            String ord3;
-            int teller = 0;
-            Ordsamling treOrd;
-            while (leser.hasNext()) {
-                ord3 = leser.next();
-                treOrd = new Ordsamling(ord1, ord2, ord3);
-                System.out.println(ord1 + " " + ord2 + " " + ord3);
-                ord1 = ord2;
-                ord2 = ord3;
-                //teller
-                Ordsamling.ordMap.put(treOrd, teller);
-                //Ordsamling.toOrd.put(ord1, ord2);
+                String ord1 = leser.next();
+                String ord2 = leser.next();
+                String ord3;
+                Ordsamling treOrd;
+                while (leser.hasNext()) {
+                    ord3 = leser.next();
+                    treOrd = new Ordsamling(ord1, ord2, ord3);
+                    //System.out.println(ord1 + " " + ord2 + " " + ord3);
+                    ord1 = ord2;
+                    ord2 = ord3;
+                    //teller
+                    Ordsamling.ordMap.put(treOrd, teller);
+                    //Ordsamling.toOrd.put(ord1, ord2);
 
-                if(leser.hasNext()) {
-                    // lag en ordsamblig
-                }else{
-                    //rekursivt kall
+                    teller++;
+                    System.out.println(teller);
+
+                    if(leser.hasNext()) {
+                        // lag en ordsamblig
+                    }else{
+                        //rekursivt kall
+                    }
                 }
+                leser.close();
+            }catch (FileNotFoundException e){
+                System.out.println("feil " + e);
+            }catch (IOException e){
+                System.out.println("URL feil - " + e);
             }
-            leser.close();
-        }catch (FileNotFoundException e){
-            System.out.println("feil " + e);
-        }catch (IOException e){
-        System.out.println("URL feil - " + e);
-    }
+        }
+
     }
     public void organiserOrd(Ordsamling array){
         // Splitt 3 og 3 og legg inn i matrise
