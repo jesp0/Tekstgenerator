@@ -4,21 +4,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Ordsamling {
-    protected static HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
+public class Ordsamling implements Comparable<Ordsamling> {
+    protected static HashMap<Ordsamling, ArrayList<String>> ordMap = new HashMap<>();
     protected int teller = 0;
     protected String[] treOrd = new String[3];
-    protected HashMap<String[], ArrayList<String>> toOrd = new HashMap<>();
+    protected String ord1;
+    protected String ord2;
+    protected String ord3;
+    protected static ArrayList<String> muligeOrd;
 
 
     // Flytte ordMap(hasmap) hit???
     // HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
 
     public Ordsamling(String ord1, String ord2, String ord3){
-        treOrd[0] = ord1;
-        treOrd[1] = ord2;
-        treOrd[2] = ord3;
-        ordDeling(treOrd);
+        this.ord1 = ord1;
+        this.ord2 = ord2;
+        this.ord3 = ord3;
+        muligeOrd = new ArrayList<>();
+        muligeOrd.add(ord3);
+
+        //if(toOrd.containsKey(this))
 
 
         // if de to første orda er like som et annet objekt sine to første ord, så tell denne forekomsten (sjekkk dette med å bruke compare
@@ -37,6 +43,17 @@ public class Ordsamling {
         return toOrd;
     }
 */
+
+    public String getOrd1() {
+        return ord1;
+    }
+    public String getOrd2() {
+        return ord2;
+    }
+    public String getOrd3() {
+        return ord3;
+    }
+
     public String[] getTreOrd() {
         return treOrd;
     }
@@ -49,25 +66,10 @@ public class Ordsamling {
         this.treOrd = treOrd;
     }
 
-    public void søk(){
+    public void organisering(){
 
     }
-    public void ordDeling(String[] ordTab){
 
-        String[] litenTab = new String[]{ordTab[0], ordTab[1]};
-        ArrayList<String> muligeOrd = new ArrayList<>();
-        String ord3 = ordTab[2];
-
-        if(toOrd.containsKey(litenTab)) {
-            /*if(toOrd.containsValue()) {
-                // tell
-            }else{
-                muligeOrd.add(ord3);
-                toOrd.put(litenTab, muligeOrd);
-            }
-            */
-
-        }
 
 // hvis keyen allerede finns henter vi ut arraylisten som er value til key, hent ut og legg inn igjen (pga overskriving)
         /*
@@ -80,7 +82,6 @@ public class Ordsamling {
         }
          */
 
-    }
     /*
     @Override
     public String toString(Ordsamling treOrd){
@@ -88,4 +89,24 @@ public class Ordsamling {
     }
 
      */
+
+    @Override
+    public int compareTo(Ordsamling o) {
+        if(this.getOrd1().equals(o.getOrd1()) && this.getOrd2().equals(o.getOrd2())){
+            return 0;
+        }
+        return -1;
+    }
+
+
+    /*
+            Til et objekt
+            Sjekk deg ved bruk av compare to
+            Hvis du får false
+            opprett egen arraylist og legg ditt tredje ord i lista
+            dersom true
+            fjern din egen key (dere har samme key) og legg tredje ord i arraylist til eksisterende key som er lik
+
+     */
+
 }

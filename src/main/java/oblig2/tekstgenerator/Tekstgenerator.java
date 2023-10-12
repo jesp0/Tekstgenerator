@@ -37,19 +37,20 @@ public class Tekstgenerator extends Application {
                 String ord2 = leser.next();
                 String ord3;
                 Ordsamling treOrd;
+                int teller1 = 0;
+                int teller2 = 0;
                 while (leser.hasNext()) {
                     ord3 = leser.next();
                     treOrd = new Ordsamling(ord1, ord2, ord3);
-                    //System.out.println(ord1 + " " + ord2 + " " + ord3);
                     ord1 = ord2;
                     ord2 = ord3;
-                    //teller
-                    Ordsamling.ordMap.put(treOrd, teller);
-                    //Ordsamling.toOrd.put(ord1, ord2);
-
-                    teller++;
-                    System.out.println(teller);
-
+                    //int sammenlign = Ordsamling.compare
+                    if(!Ordsamling.ordMap.keySet(treOrd)) { // FUNKER IKKE
+                        Ordsamling.ordMap.put(treOrd, Ordsamling.muligeOrd);
+                        teller1++;
+                    }else{
+                        teller2++;
+                    }
                     if(leser.hasNext()) {
                         // lag en ordsamblig
                     }else{
@@ -57,6 +58,12 @@ public class Tekstgenerator extends Application {
                     }
                 }
                 leser.close();
+                System.out.println("If- sjekken - " + teller1);
+                System.out.println("ELSE - " + teller2);
+                /*for(Ordsamling key : Ordsamling.ordMap.keySet()) {
+                    int resultat = treOrd.compareTo(key);
+                    System.out.println(resultat);
+                }*/
             }catch (FileNotFoundException e){
                 System.out.println("feil " + e);
             }catch (IOException e){
