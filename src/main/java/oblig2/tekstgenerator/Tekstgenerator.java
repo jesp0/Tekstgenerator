@@ -8,12 +8,10 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Tekstgenerator extends Application {
+    protected  ArrayList<Ordsamling> ordListe = new ArrayList<>();
     @Override
     public void start(Stage stage) throws IOException {
         Pane pane = new Pane();
@@ -30,7 +28,9 @@ public class Tekstgenerator extends Application {
         int teller = 0;
         for(String link : linker){
             try {
-                URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/" + link + ".txt");
+                //URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/" + link + ".txt");
+                URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/" + "Norgeisenmiddelalderen" + ".txt");
+
                 Scanner leser = new Scanner(new InputStreamReader(url.openStream()));
 
                 String ord1 = leser.next();
@@ -42,28 +42,13 @@ public class Tekstgenerator extends Application {
                 while (leser.hasNext()) {
                     ord3 = leser.next();
                     treOrd = new Ordsamling(ord1, ord2, ord3);
+                    ordListe.add(treOrd);
                     ord1 = ord2;
                     ord2 = ord3;
-                    //int sammenlign = Ordsamling.compare
-                    if(!Ordsamling.ordMap.keySet(treOrd)) { // FUNKER IKKE
-                        Ordsamling.ordMap.put(treOrd, Ordsamling.muligeOrd);
-                        teller1++;
-                    }else{
-                        teller2++;
-                    }
-                    if(leser.hasNext()) {
-                        // lag en ordsamblig
-                    }else{
-                        //rekursivt kall
-                    }
+                    Ordsamling.ordMap.put(treOrd, Ordsamling.muligeOrd);
                 }
                 leser.close();
-                System.out.println("If- sjekken - " + teller1);
-                System.out.println("ELSE - " + teller2);
-                /*for(Ordsamling key : Ordsamling.ordMap.keySet()) {
-                    int resultat = treOrd.compareTo(key);
-                    System.out.println(resultat);
-                }*/
+                sjekk();
             }catch (FileNotFoundException e){
                 System.out.println("feil " + e);
             }catch (IOException e){
@@ -72,6 +57,25 @@ public class Tekstgenerator extends Application {
         }
 
     }
+
+    // Sjekker alle Ordsamlinger opp mot key i hasMap
+    public void sjekk(){
+        int i = 0;
+        for(Ordsamling key : Ordsamling.ordMap.keySet()){
+            if(key.compareTo(ordListe.get(i)) == 0) {
+                ArrayList<String> oldValue = Ordsamling.ordMap.get(key);
+                oldValue.add(ordListe.get(i).getOrd3());
+                Ordsamling.ordMap.replace(ordListe.get(i), oldValue);
+                System.out.println(oldValue);
+            }
+            i++;
+        }
+    }
+
+    public void organisereMatrise(){
+
+    }
+
     public void organiserOrd(Ordsamling array){
         // Splitt 3 og 3 og legg inn i matrise
         // Splitt, matrise, hashmap

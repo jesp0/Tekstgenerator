@@ -14,9 +14,6 @@ public class Ordsamling implements Comparable<Ordsamling> {
     protected static ArrayList<String> muligeOrd;
 
 
-    // Flytte ordMap(hasmap) hit???
-    // HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
-
     public Ordsamling(String ord1, String ord2, String ord3){
         this.ord1 = ord1;
         this.ord2 = ord2;
@@ -24,7 +21,6 @@ public class Ordsamling implements Comparable<Ordsamling> {
         muligeOrd = new ArrayList<>();
         muligeOrd.add(ord3);
 
-        //if(toOrd.containsKey(this))
 
 
         // if de to første orda er like som et annet objekt sine to første ord, så tell denne forekomsten (sjekkk dette med å bruke compare
@@ -43,6 +39,14 @@ public class Ordsamling implements Comparable<Ordsamling> {
         return toOrd;
     }
 */
+    public void sjekk(){
+        for(Ordsamling key : ordMap.keySet()){
+            if(key.compareTo(this) == 0){
+                System.out.println("Like ord!!!!!!");
+            }
+        }
+
+    }
 
     public String getOrd1() {
         return ord1;
