@@ -60,15 +60,18 @@ public class Tekstgenerator extends Application {
 
     // Sjekker alle Ordsamlinger opp mot key i hasMap
     public void sjekk(){
-        int i = 0;
+        ArrayList<String> oldValue = new ArrayList<>();
         for(Ordsamling key : Ordsamling.ordMap.keySet()){
-            if(key.compareTo(ordListe.get(i)) == 0) {
-                ArrayList<String> oldValue = Ordsamling.ordMap.get(key);
-                oldValue.add(ordListe.get(i).getOrd3());
-                Ordsamling.ordMap.replace(ordListe.get(i), oldValue);
-                System.out.println(oldValue);
+            for (int i=0; i<ordListe.size();i++) {
+                if (key.compareTo(ordListe.get(i)) == 0) {
+                    oldValue = Ordsamling.ordMap.get(key);
+                    oldValue.add(ordListe.get(i).getOrd3());
+                    Ordsamling.ordMap.replace(ordListe.get(i), oldValue);
+
+                }
+
             }
-            i++;
+            System.out.println(oldValue);
         }
     }
 
