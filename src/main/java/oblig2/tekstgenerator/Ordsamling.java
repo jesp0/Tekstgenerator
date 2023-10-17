@@ -12,6 +12,7 @@ public class Ordsamling implements Comparable<Ordsamling> {
     protected String ord2;
     protected String ord3;
     protected static ArrayList<String> muligeOrd;
+    public int ant = 0;
 
 
     public Ordsamling(String ord1, String ord2, String ord3){
@@ -20,6 +21,19 @@ public class Ordsamling implements Comparable<Ordsamling> {
         this.ord3 = ord3;
         muligeOrd = new ArrayList<>();
         muligeOrd.add(ord3);
+        setAnt(ant);
+        /*
+        Tanken var å legge til antallet forekomster av to ord og plusse på etterhvert som de oppdages
+            Ant oppdateres i sjekk()
+        Interesanne(?) funn:
+        Key sin getAnt ser ut til å funke: 'straffbar' og 'handling' var ord1 og ord2 2 ganger
+            Oppdatering: Den teller ikke hver gang??? ord1="det" ord2="var" 14 ganger men det blir bare telt
+            1 gang???????
+        Key sin ANT blir 2 kun der ordmap / ordValue har 3 verdier i stedet for 2
+        Får forskjellige utskrifter noen ganger???? (innholdet i ordmap og oldValue)
+        Get sin ANT telles bare når de to orda er like (ordMap - [og, og])
+
+        */
 
 
 
@@ -57,15 +71,23 @@ public class Ordsamling implements Comparable<Ordsamling> {
     public String getOrd3() {
         return ord3;
     }
+    public int getAnt() {
+        return ant;
+    }
 
     public String[] getTreOrd() {
         return treOrd;
     }
-/*
-    public void setToOrd(String[] toOrd) {
-        this.toOrd = toOrd;
+
+    public void setAnt(int ant) {
+        this.ant = ant;
     }
-*/
+
+    /*
+        public void setToOrd(String[] toOrd) {
+            this.toOrd = toOrd;
+        }
+    */
     public void setTreOrd(String[] treOrd) {
         this.treOrd = treOrd;
     }
@@ -86,13 +108,24 @@ public class Ordsamling implements Comparable<Ordsamling> {
         }
          */
 
+
     /*
-    @Override
     public String toString(Ordsamling treOrd){
         return "" + treOrd.get;
     }
+*/
+    // Generert av IntelliJ
+    @Override
+    public String toString() {
+        return "Ordsamling{" +
+                " ord1='" + ord1 + '\'' +
+                ", ord2='" + ord2 + '\'' +
+                ", ord3='" + ord3 + '\'' +
+                ", ant='" + ant + '\'' +
+                '}';
+    }
 
-     */
+
 
     @Override
     public int compareTo(Ordsamling o) {
