@@ -5,35 +5,25 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Ordsamling implements Comparable<Ordsamling> {
-    protected static HashMap<Ordsamling, ArrayList<String>> ordMap = new HashMap<>();
+    protected static HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
     protected int teller = 0;
     protected String[] treOrd = new String[3];
     protected String ord1;
     protected String ord2;
     protected String ord3;
     protected static ArrayList<String> muligeOrd;
-    public int ant = 0;
+    public  int ant = 0;
 
 
     public Ordsamling(String ord1, String ord2, String ord3){
         this.ord1 = ord1;
         this.ord2 = ord2;
         this.ord3 = ord3;
-        muligeOrd = new ArrayList<>();
-        muligeOrd.add(ord3);
-        setAnt(ant);
-        /*
-        Tanken var å legge til antallet forekomster av to ord og plusse på etterhvert som de oppdages
-            Ant oppdateres i sjekk()
-        Interesanne(?) funn:
-        Key sin getAnt ser ut til å funke: 'straffbar' og 'handling' var ord1 og ord2 2 ganger
-            Oppdatering: Den teller ikke hver gang??? ord1="det" ord2="var" 14 ganger men det blir bare telt
-            1 gang???????
-        Key sin ANT blir 2 kun der ordmap / ordValue har 3 verdier i stedet for 2
-        Får forskjellige utskrifter noen ganger???? (innholdet i ordmap og oldValue)
-        Get sin ANT telles bare når de to orda er like (ordMap - [og, og])
+        ToOrd toOrd = new ToOrd(ord1,ord2);
+        //if (toOrd.compareTo())
+        ToOrd.ordListe.add(ord3);
 
-        */
+
 
 
 
@@ -129,7 +119,7 @@ public class Ordsamling implements Comparable<Ordsamling> {
 
     @Override
     public int compareTo(Ordsamling o) {
-        if(this.getOrd1().equals(o.getOrd1()) && this.getOrd2().equals(o.getOrd2())){
+        if(this.getOrd1().equals(o.getOrd1()) && this.getOrd2().equals(o.getOrd2()) && this.getOrd3().equals(o.getOrd3())){
             return 0;
         }
         return -1;

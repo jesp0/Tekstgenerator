@@ -38,15 +38,18 @@ public class Tekstgenerator extends Application {
                 String ord2 = leser.next();
                 String ord3;
                 Ordsamling treOrd;
-                int teller1 = 0;
-                int teller2 = 0;
                 while (leser.hasNext()) {
+                    int ant = 1;
                     ord3 = leser.next();
                     treOrd = new Ordsamling(ord1, ord2, ord3);
-                    ordListe.add(treOrd);
+                    if (Ordsamling.ordMap.get(treOrd) == null)
+                        Ordsamling.ordMap.put(treOrd, ant);
+                    else
+                        Ordsamling.ordMap.replace(treOrd,++ant);
+
+                    //ordListe.add(treOrd);
                     ord1 = ord2;
                     ord2 = ord3;
-                    Ordsamling.ordMap.put(treOrd, Ordsamling.muligeOrd);
                 }
                 leser.close();
                 sjekk();
@@ -61,24 +64,7 @@ public class Tekstgenerator extends Application {
 
     // Sjekker alle Ordsamlinger opp mot key i hasMap
     public void sjekk(){
-        int i = 0;
-        for(Ordsamling key : Ordsamling.ordMap.keySet()){
 
-            if(key.compareTo(ordListe.get(i)) == 0) {
-                ArrayList<String> oldValue = Ordsamling.ordMap.get(key);
-                oldValue.add(ordListe.get(i).getOrd3());
-                Ordsamling.ordMap.replace(ordListe.get(i), oldValue);
-                System.out.println("ordMap - " + Ordsamling.ordMap.get(key));
-                System.out.println("oldValue-" + oldValue);
-                key.setAnt(key.getAnt() + 1);
-                System.out.println("Key sin ANT - " + key.getAnt());
-                System.out.println("Get sin ANT - " + ordListe.get(i).getAnt());
-                System.out.println("KEY - " + key.toString() + " GET - " + ordListe.get(i).toString() + "\n");
-
-
-            }
-        }
-        System.out.println("i - " + i);
     }
 
     public void organisereMatrise(){
