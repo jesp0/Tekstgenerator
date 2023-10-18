@@ -3,6 +3,7 @@ package oblig2.tekstgenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Ordsamling implements Comparable<Ordsamling> {
     protected static HashMap<Ordsamling, Integer> ordMap = new HashMap<>();
@@ -11,7 +12,7 @@ public class Ordsamling implements Comparable<Ordsamling> {
     protected String ord1;
     protected String ord2;
     protected String ord3;
-    protected static ArrayList<String> muligeOrd;
+    protected static LinkedList<ToOrd> samlingToOrd = new LinkedList<>();
     public  int ant = 0;
 
 
@@ -19,13 +20,8 @@ public class Ordsamling implements Comparable<Ordsamling> {
         this.ord1 = ord1;
         this.ord2 = ord2;
         this.ord3 = ord3;
-        ToOrd toOrd = new ToOrd(ord1,ord2);
-        //if (toOrd.compareTo())
-        ToOrd.ordListe.add(ord3);
-
-
-
-
+        ToOrd toOrd = new ToOrd(ord1, ord2, ord3);
+        samlingToOrd.add(toOrd); // ???????
 
         // if de to første orda er like som et annet objekt sine to første ord, så tell denne forekomsten (sjekkk dette med å bruke compare
         // if(ordMap.containsKey(this){
