@@ -21,7 +21,7 @@ public class Tekstgenerator extends Application {
         Pane pane = new Pane();
         hentTekst();
         opprettStatistikk();
-        System.out.println(ordMap.toString());
+        //System.out.println(ordMap.toString());
         Scene scene = new Scene(pane, 320, 240);
         stage.setTitle("Oblig 2 - Tekstgenerator");
         stage.setScene(scene);
@@ -46,7 +46,12 @@ public class Tekstgenerator extends Application {
                 while (leser.hasNext()) {
                     ord3 = leser.next();
                     treOrd = new Ordsamling(ord1, ord2, ord3);
-                    ordMap.put(treOrd, treOrdAnt+1);
+                    if (ordMap.containsKey(treOrd)) {
+                        int tell = ordMap.get(treOrd);
+                        ordMap.put(treOrd, tell + 1);
+                    } else {
+                        ordMap.put(treOrd, 1);
+                    }
                     ord1 = ord2;
                     ord2 = ord3;
                 }
@@ -62,13 +67,10 @@ public class Tekstgenerator extends Application {
     }
 
     // Lager statistikk på hyppigheten av en bestemt ordsamling
-    public void opprettStatistikk(){
-
+    public void opprettStatistikk() {
         for (Ordsamling key : ordMap.keySet()) {
-            if (ordMap.containsKey(key)) {
-                //treOrdAnt = ordMap.get(key);
-                ordMap.replace(key,ordMap.get(key)+1);
-            }
+            int treOrdAnt = ordMap.get(key);
+            System.out.println(key.toString() + ": " + treOrdAnt);
         }
     }
 
