@@ -73,6 +73,18 @@ public class Ordsamling implements Comparable<Ordsamling> {
 
     @Override
     public int hashCode() {
-        return ord1.hashCode()+ord2.hashCode()+ord3.hashCode();
+        return ord1.hashCode() + ord2.hashCode() + ord3.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ordsamling annen = (Ordsamling) o;
+        return Objects.equals(ord1, annen.ord1) &&
+                Objects.equals(ord2, annen.ord2) &&
+                Objects.equals(ord3, annen.ord3);
     }
 }
+
+
