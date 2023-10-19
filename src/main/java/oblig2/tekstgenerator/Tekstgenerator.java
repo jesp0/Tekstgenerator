@@ -13,10 +13,15 @@ import java.util.*;
 
 public class Tekstgenerator extends Application {
     protected  ArrayList<Ordsamling> ordListe = new ArrayList<>();
+    protected static HashMap<Ordsamling, Integer> ordMap;
+    protected static int treOrdAnt;
     @Override
     public void start(Stage stage) throws IOException {
+        ordMap = new HashMap<>();
         Pane pane = new Pane();
         hentTekst();
+        opprettStatistikk();
+        System.out.println(ordMap.toString());
         Scene scene = new Scene(pane, 320, 240);
         stage.setTitle("Oblig 2 - Tekstgenerator");
         stage.setScene(scene);
@@ -39,49 +44,35 @@ public class Tekstgenerator extends Application {
                 String ord3;
                 Ordsamling treOrd;
                 while (leser.hasNext()) {
-                    int ant = 1;
                     ord3 = leser.next();
                     treOrd = new Ordsamling(ord1, ord2, ord3);
-                    if (Ordsamling.ordMap.get(treOrd) == null)
-                        Ordsamling.ordMap.put(treOrd, ant);
-                    else
-                        Ordsamling.ordMap.replace(treOrd,++ant);
-
-                    //ordListe.add(treOrd);
+                    ordMap.put(treOrd, treOrdAnt+1);
                     ord1 = ord2;
                     ord2 = ord3;
                 }
                 leser.close();
-                sjekk();
+
             }catch (FileNotFoundException e){
                 System.out.println("Fil ikke funnet - " + e);
             }catch (IOException e){
                 System.out.println("URL feil - " + e);
             }
         }
-
+        //sjekkToOrd();
     }
 
-    // Sjekker alle Ordsamlinger opp mot key i hasMap
-    public void sjekk(){
+    // Lager statistikk på hyppigheten av en bestemt ordsamling
+    public void opprettStatistikk(){
 
+        for (Ordsamling key : ordMap.keySet()) {
+            if (ordMap.containsKey(key)) {
+                //treOrdAnt = ordMap.get(key);
+                ordMap.replace(key,ordMap.get(key)+1);
+            }
+        }
     }
 
-    public void organisereMatrise(){
 
-    }
-
-    public void organiserOrd(Ordsamling array){
-        // Splitt 3 og 3 og legg inn i matrise
-        // Splitt, matrise, hashmap
-        StringBuffer buffer = new StringBuffer();
-        // få tak i tekst
-        // splitte på mellomrom
-        // buffer.append(next)
-        // tre ganger, så det ligger i bufferen
-        // ordsamling.toOrd(bruker konstruktøren)
-        // sende inn bufferen i stedet for 2 strings
-    }
 
     /**
      * Metoden henter tre og tre ord fra innlest fil, og legger de til i et Hashmap
