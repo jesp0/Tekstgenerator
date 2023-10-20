@@ -11,22 +11,21 @@ public class ToOrd implements Comparable<ToOrd> {
     private int hyppighet;
     protected HashMap<LinkedList<String>,LinkedList<Integer>> tredjeOrdMap = new HashMap<>(); // Det tredje ordet som blir sendt med fra ordsamling
     // putte ordliste som key, tallListe som value
-    protected LinkedList<String> ordListe;
-    protected LinkedList<Integer> tallListe;
-    public int ant = 0;
+    //protected LinkedList<String> ordListe;
+    //protected LinkedList<Integer> tallListe;
     protected static LinkedList<ToOrd> samlingToOrd = new LinkedList<>();
 
     // hver toOrd må ha sitt eget hashmap med key: tredjeord, value: hyppighet
 
-    public ToOrd(String ord1, String ord2, String ord3, LinkedList<String> ordTab,LinkedList<Integer> tallTab, int ant ) {
+    public ToOrd(String ord1, String ord2, SisteOrd sisteOrd) {
         this.ord1 = ord1;
         this.ord2 = ord2;
-        this.ord3 = ord3;
-        this.ant = ant;
-        //System.out.println("To Ord 1");
-        this.ordListe = ordTab;
-        this.tallListe = tallTab;
+        // Denne skal inn i ordTab
+        //this.ord3 = ord3;
+        //this.ordListe = ordTab;
+        //this.tallListe = tallTab;
 
+        /*
             if(ordTab.isEmpty()){
                 ordTab.add(ord3);
                 //System.out.println("TEST");
@@ -40,7 +39,7 @@ public class ToOrd implements Comparable<ToOrd> {
                 ordTab.add(ord3);
             }
 
-        tredjeOrdMap.put(ordTab, tallTab);
+        tredjeOrdMap.put(ordTab, tallTab);*/
         //System.out.println(ordTab);
         if(hyppighet>1){
             //System.out.println(this);
@@ -73,13 +72,7 @@ public class ToOrd implements Comparable<ToOrd> {
         return ord3;
     }
 
-    public void setAnt(int ant) {
-        this.ant = ant;
-    }
 
-    public LinkedList<String> getOrdListe() {
-        return ordListe;
-    }
 
     @Override
     public int compareTo(ToOrd o) {
@@ -87,5 +80,16 @@ public class ToOrd implements Comparable<ToOrd> {
             return 0;
         return -1;
     }
+
+    // Må endre hshcode her også, så vi kan sammenligne
+    @Override
+    public int hashCode() {
+        return ord1.hashCode() + ord2.hashCode();
+    }
+
+    /*Lage en metode som tar inn ord mapet og sjekker
+    * at det er flere av dem. Hvis det er flere så legger
+    * sp lager vi en toOrd av det og legger siste ordet i
+    * den linkedListen. Den må kanskje finnes i TG*/
 
 }

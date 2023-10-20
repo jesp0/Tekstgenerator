@@ -15,6 +15,7 @@ public class Tekstgenerator extends Application {
     protected  ArrayList<Ordsamling> ordListe = new ArrayList<>();
     protected static HashMap<Ordsamling, Integer> ordMap;
     protected static int treOrdAnt;
+    protected static HashMap<ToOrd,SisteOrd> toOrdSamling;
     @Override
     public void start(Stage stage) throws IOException {
         ordMap = new HashMap<>();
