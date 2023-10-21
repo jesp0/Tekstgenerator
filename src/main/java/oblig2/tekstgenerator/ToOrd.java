@@ -2,6 +2,7 @@ package oblig2.tekstgenerator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class ToOrd implements Comparable<ToOrd> {
 
@@ -50,6 +51,10 @@ public class ToOrd implements Comparable<ToOrd> {
 
 
     }
+    public ToOrd(String ord1, String ord2){
+        this.ord1=ord1;
+        this.ord2=ord2;
+    }
     @Override
     public String toString() {
         return "ToOrd{" +
@@ -85,6 +90,14 @@ public class ToOrd implements Comparable<ToOrd> {
     @Override
     public int hashCode() {
         return ord1.hashCode() + ord2.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ToOrd toOrd = (ToOrd) o;
+        return Objects.equals(ord1, toOrd.ord1) && Objects.equals(ord2, toOrd.ord2);
     }
 
     /*Lage en metode som tar inn ord mapet og sjekker
