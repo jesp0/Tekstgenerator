@@ -14,7 +14,20 @@ public class SisteOrd {
     }
 
     public void leggTilOrd(String ord) {
-        int index = ordListe.indexOf(ord);
+        // Clean the input word by removing special characters and converting to lowercase
+        ord = ord.replaceAll("[.,!;]", "").toLowerCase().trim();
+
+        int index = -1; // Initialize with -1 to indicate that the word is not found in the list.
+
+        for (int i = 0; i < ordListe.size(); i++) {
+            String wordInList = ordListe.get(i).replaceAll("[.,!;]", "").toLowerCase().trim(); // Clean and normalize list word
+            //System.out.println("Comparing " + ord + " with " + ordListe.get(i)); // Debugging output
+            if (wordInList.equals(ord)) {
+                index = i;
+                break; // Exit the loop once a match is found.
+            }
+        }
+
         if (index != -1) {
             int count = tallListe.get(index);
             tallListe.set(index, count + 1);
@@ -22,7 +35,8 @@ public class SisteOrd {
             ordListe.add(ord);
             tallListe.add(1);
         }
-        System.out.println(ordListe.indexOf(ord));
+        //System.out.println("Index: " + index); // Debugging output
+        System.out.println(tallListe);
     }
 
     public LinkedList<String> getOrdListe() {

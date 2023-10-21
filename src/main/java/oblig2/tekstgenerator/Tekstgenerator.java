@@ -83,7 +83,7 @@ public class Tekstgenerator extends Application {
                 sisteOrd = toOrdSamling.get(toOrd);
             }
 
-            sisteOrd.leggTilOrd(key.getOrd3());
+            sisteOrd.leggTilOrd(key.getOrd3()); // This will add the third word to SisteOrd
         }
     }
 
