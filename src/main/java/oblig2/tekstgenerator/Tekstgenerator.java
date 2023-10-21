@@ -2,6 +2,11 @@ package oblig2.tekstgenerator;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -16,15 +21,34 @@ public class Tekstgenerator extends Application {
     protected static HashMap<Ordsamling, Integer> ordMap;
     protected static int treOrdAnt;
     protected static HashMap<ToOrd,SisteOrd> toOrdSamling ;
+    String[] linker = {"norskeeventyr", "SAS-Wikipedia", "straffeloven", "tusenogennatt", "vikingene", "Helsesørøst", "Norgeisenmiddelalderen"};
+    //ComboBox<String>  filValg = new ComboBox<>();
+
     @Override
     public void start(Stage stage) throws IOException {
+        //filValg.getItems().addAll(linker);
+
         ordMap = new HashMap<>();
         toOrdSamling = new HashMap<>();
-        Pane pane = new Pane();
+        FlowPane panel = new FlowPane();
         hentTekst();
         opprettToOrd();
+
+        TextArea textArea = new TextArea();
+        textArea.setPrefRowCount(10);
+        textArea.setPrefColumnCount(40);
+
+        Button generateButton = new Button("Lag tekst");
+        generateButton.setOnAction(event -> {
+            String randomText = genererTekst(new SisteOrd(), 1000); // Adjust the desired text length
+            textArea.setText(randomText);
+        });
+
+        panel.getChildren().addAll(textArea, generateButton);
+
+
         //System.out.println(ordMap.toString());
-        Scene scene = new Scene(pane, 320, 240);
+        Scene scene = new Scene(panel, 400, 240);
         stage.setTitle("Oblig 2 - Tekstgenerator");
         stage.setScene(scene);
         stage.show();
@@ -32,7 +56,7 @@ public class Tekstgenerator extends Application {
 
     public void hentTekst(){
         // Fungerer fordi alle URLene er (nesten) like
-        String[] linker = {"norskeeventyr", "SAS-Wikipedia", "straffeloven", "tusenogennatt", "vikingene", "Helsesørøst", "Norgeisenmiddelalderen"};
+
         int teller = 0;
         for(String link : linker){
             try {
@@ -86,6 +110,64 @@ public class Tekstgenerator extends Application {
             sisteOrd.leggTilOrd(key.getOrd3()); // This will add the third word to SisteOrd
         }
     }
+    public String genererTekst(SisteOrd sisteOrd, int textLength) {
+        Random random = new Random();
+        String[] nyeOrd = hentOrd();
+        String ord1 = nyeOrd[0];
+        String ord2 = nyeOrd[1];
+        return genererTekst(sisteOrd, textLength, ord1, ord2, new StringBuilder());
+    }
+
+    private String genererTekst(SisteOrd sisteOrd, int remainingLength, String ord1, String ord2, StringBuilder generatedText) {
+        if (remainingLength == 0) {
+            return generatedText.toString();
+        }
+
+        Random random = new Random();
+        ToOrd toOrd = new ToOrd(ord1, ord2);
+        SisteOrd currentSisteOrd = toOrdSamling.get(toOrd);
+
+        if (currentSisteOrd != null) {
+            LinkedList<String> ordListe = currentSisteOrd.getOrdListe();
+            LinkedList<Integer> tallListe = currentSisteOrd.getTallListe();
+            int totalTeller = tallListe.stream().mapToInt(Integer::intValue).sum();
+            int randomCount = random.nextInt(totalTeller);
+            int cumulativeCount = 0;
+            String nextWord = null;
+
+            for (int j = 0; j < ordListe.size(); j++) {
+                cumulativeCount += tallListe.get(j);
+                if (cumulativeCount >= randomCount) {
+                    nextWord = ordListe.get(j);
+                    break;
+                }
+            }
+
+            if (nextWord != null) {
+                generatedText.append(nextWord).append(" ");
+                return genererTekst(sisteOrd, remainingLength - 1, ord2, nextWord, generatedText);
+            }
+        }
+
+        // If no suitable word is found, return the generated text.
+        return generatedText.toString();
+    }
+    public String[] hentOrd() {
+        if (ordMap.isEmpty()) {
+            return new String[]{"", ""}; // Handle the case where the map is empty.
+        }
+
+        List<Ordsamling> keysAsList = new ArrayList<>(ordMap.keySet());
+        Random random = new Random();
+        int randomIndex = random.nextInt(keysAsList.size());
+
+        Ordsamling randomOrdsamling = keysAsList.get(randomIndex);
+        String[] words = new String[2];
+        words[0] = randomOrdsamling.getOrd1();
+        words[1] = randomOrdsamling.getOrd2();
+
+        return words;
+    }
 
 
    /* public void sjekkSisteOrd(SisteOrd sisteOrd, String ord){
@@ -132,6 +214,8 @@ public class Tekstgenerator extends Application {
      * @param ord1
      * @param ord2
      */
+
+
     public void rekursiv(Scanner scanner, String ord1, String ord2){
         int teller = 0;
         if(scanner.hasNext()) {
@@ -152,6 +236,7 @@ public class Tekstgenerator extends Application {
             // if last character i stringen er .;,:!?
         }
     }
+
 
     public static void main(String[] args) {
         launch();
