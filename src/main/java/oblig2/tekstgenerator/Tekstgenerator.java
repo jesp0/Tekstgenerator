@@ -118,9 +118,9 @@ public class Tekstgenerator extends Application {
         return genererTekst(sisteOrd, textLength, ord1, ord2, new StringBuilder());
     }
 
-    private String genererTekst(SisteOrd sisteOrd, int remainingLength, String ord1, String ord2, StringBuilder generatedText) {
-        if (remainingLength == 0) {
-            return generatedText.toString();
+    private String genererTekst(SisteOrd sisteOrd, int lengde, String ord1, String ord2, StringBuilder genTekst) {
+        if (lengde == 0) {
+            return genTekst.toString();
         }
 
         Random random = new Random();
@@ -131,37 +131,37 @@ public class Tekstgenerator extends Application {
             LinkedList<String> ordListe = currentSisteOrd.getOrdListe();
             LinkedList<Integer> tallListe = currentSisteOrd.getTallListe();
             int totalTeller = tallListe.stream().mapToInt(Integer::intValue).sum();
-            int randomCount = random.nextInt(totalTeller);
-            int cumulativeCount = 0;
-            String nextWord = null;
+            int randomTeller = random.nextInt(totalTeller);
+            int kumTeller = 0;
+            String nesteOrd = null;
 
             for (int j = 0; j < ordListe.size(); j++) {
-                cumulativeCount += tallListe.get(j);
-                if (cumulativeCount >= randomCount) {
-                    nextWord = ordListe.get(j);
+                kumTeller += tallListe.get(j);
+                if (kumTeller >= randomTeller) {
+                    nesteOrd = ordListe.get(j);
                     break;
                 }
             }
 
-            if (nextWord != null) {
-                generatedText.append(nextWord).append(" ");
-                return genererTekst(sisteOrd, remainingLength - 1, ord2, nextWord, generatedText);
+            if (nesteOrd != null) {
+                genTekst.append(nesteOrd).append(" ");
+                return genererTekst(sisteOrd, lengde - 1, ord2, nesteOrd, genTekst);
             }
         }
 
         // If no suitable word is found, return the generated text.
-        return generatedText.toString();
+        return genTekst.toString();
     }
     public String[] hentOrd() {
         if (ordMap.isEmpty()) {
             return new String[]{"", ""}; // Handle the case where the map is empty.
         }
 
-        List<Ordsamling> keysAsList = new ArrayList<>(ordMap.keySet());
+        List<Ordsamling> keyListe = new ArrayList<>(ordMap.keySet());
         Random random = new Random();
-        int randomIndex = random.nextInt(keysAsList.size());
+        int randomIndex = random.nextInt(keyListe.size());
 
-        Ordsamling randomOrdsamling = keysAsList.get(randomIndex);
+        Ordsamling randomOrdsamling = keyListe.get(randomIndex);
         String[] words = new String[2];
         words[0] = randomOrdsamling.getOrd1();
         words[1] = randomOrdsamling.getOrd2();

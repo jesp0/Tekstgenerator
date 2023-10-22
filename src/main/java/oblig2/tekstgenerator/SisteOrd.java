@@ -20,9 +20,9 @@ public class SisteOrd {
         int index = -1; // Initialize with -1 to indicate that the word is not found in the list.
 
         for (int i = 0; i < ordListe.size(); i++) {
-            String wordInList = ordListe.get(i).replaceAll("[.,!;:]", "").toLowerCase().trim(); // Clean and normalize list word
+            String ordNå = ordListe.get(i).replaceAll("[.,!;:]", "").toLowerCase().trim(); // Clean and normalize list word
             //System.out.println("Comparing " + ord + " with " + ordListe.get(i)); // Debugging output
-            if (wordInList.equals(ord)) {
+            if (ordNå.equals(ord)) {
                 index = i;
                 break; // Exit the loop once a match is found.
             }
