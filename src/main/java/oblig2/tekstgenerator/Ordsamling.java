@@ -2,16 +2,13 @@ package oblig2.tekstgenerator;
 
 import java.util.*;
 
+/**
+ * Klassen holder på en samling av tre ord. Den kan sammenligne en treOrd-samling.
+ */
 public class Ordsamling implements Comparable<Ordsamling> {
-
-    protected int teller = 0;
     protected String ord1;
     protected String ord2;
     protected String ord3;
-
-    protected int toOrdTeller = 0;
-
-
 
     public Ordsamling(String ord1, String ord2, String ord3){
         this.ord1 = ord1;
@@ -19,15 +16,6 @@ public class Ordsamling implements Comparable<Ordsamling> {
         this.ord3 = ord3;
 
     }
-
-    public Ordsamling(String[] ordTab, String ord3){
-        //toOrd.put(ordTab, ord3);
-    }
-
-    public void sjekk(){
-
-    }
-
     public String getOrd1() {
         return ord1;
     }
@@ -38,21 +26,6 @@ public class Ordsamling implements Comparable<Ordsamling> {
         return ord3;
     }
 
-
-
-
-
-
-    /*
-        public void setToOrd(String[] toOrd) {
-            this.toOrd = toOrd;
-        }
-    */
-
-
-    public void organisering(){
-
-    }
     @Override
     public String toString() {
         return "Ordsamling{" +
@@ -61,8 +34,6 @@ public class Ordsamling implements Comparable<Ordsamling> {
                 ", ord3='" + ord3 + '\'' +
                 '}';
     }
-
-
     @Override
     public int compareTo(Ordsamling o) {
         if(this.getOrd1().equals(o.getOrd1()) && this.getOrd2().equals(o.getOrd2()) && this.getOrd3().equals(o.getOrd3())){
@@ -71,11 +42,20 @@ public class Ordsamling implements Comparable<Ordsamling> {
         return -1;
     }
 
+    /**
+     * Legger sammen verdien av hver Strings hashcode for å få en enkelt sum.
+     * @return hashcode til objektet
+     */
     @Override
     public int hashCode() {
         return ord1.hashCode() + ord2.hashCode() + ord3.hashCode();
     }
 
+    /**
+     * Avgjør om alle tre ord er like for at et objekt skal være likt.
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

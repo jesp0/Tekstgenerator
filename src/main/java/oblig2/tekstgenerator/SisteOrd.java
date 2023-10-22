@@ -1,9 +1,10 @@
 package oblig2.tekstgenerator;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
+/**
+ * Klassen oppretter et objekt som holder på to linkedlister for å holde på statistikk over forekomst av tredje ord.
+ */
 public class SisteOrd {
     protected LinkedList<String> ordListe;
     protected LinkedList<Integer> tallListe;
@@ -13,39 +14,34 @@ public class SisteOrd {
         tallListe = new LinkedList<>();
     }
 
+    /**
+     * Metoden sjekker om ordet eksisterer fra før.
+     * Dersom det eksisterer endres verdien i tallListe parallellt med ordListe.
+     * Dersom den ikke eksisterer legges den bare til.
+     * @param ord
+     */
     public void leggTilOrd(String ord) {
-        // Clean the input word by removing special characters and converting to lowercase
-        ord = ord.replaceAll("[.,!;]", "").toLowerCase().trim();
-
-        int index = -1; // Initialize with -1 to indicate that the word is not found in the list.
-
+        // Gi verdi -1 dersom ordet ikke finnes i lista.
+        int index = -1;
         for (int i = 0; i < ordListe.size(); i++) {
-            String ordNå = ordListe.get(i).replaceAll("[.,!;:]", "").toLowerCase().trim(); // Clean and normalize list word
-            //System.out.println("Comparing " + ord + " with " + ordListe.get(i)); // Debugging output
+            String ordNå = ordListe.get(i);
             if (ordNå.equals(ord)) {
                 index = i;
-                break; // Exit the loop once a match is found.
+                break;
             }
         }
-
         if (index != -1) {
-            int count = tallListe.get(index);
-            tallListe.set(index, count + 1);
+            int tell = tallListe.get(index);
+            tallListe.set(index, tell + 1);
         } else {
             ordListe.add(ord);
             tallListe.add(1);
         }
-        //System.out.println("Index: " + index); // Debugging output
     }
-
     public LinkedList<String> getOrdListe() {
         return ordListe;
     }
-
     public LinkedList<Integer> getTallListe() {
         return tallListe;
     }
 }
-
-
-
