@@ -23,6 +23,7 @@ public class Tekstgenerator extends Application {
     protected static HashMap<ToOrd,SisteOrd> toOrdSamling ;
     String[] linker = {"norskeeventyr", "SAS-Wikipedia", "straffeloven", "tusenogennatt", "vikingene", "Helsesørøst", "Norgeisenmiddelalderen"};
     //ComboBox<String>  filValg = new ComboBox<>();
+    TextArea textArea = new TextArea();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,21 +35,21 @@ public class Tekstgenerator extends Application {
         hentTekst();
         opprettToOrd();
 
-        TextArea textArea = new TextArea();
+
+        textArea.setPrefColumnCount(60);
+        textArea.setWrapText(true);
         textArea.setPrefRowCount(10);
-        textArea.setPrefColumnCount(40);
 
         Button generateButton = new Button("Lag tekst");
-        generateButton.setOnAction(event -> {
-            String randomText = genererTekst(new SisteOrd(), 1000); // Adjust the desired text length
-            textArea.setText(randomText);
+        generateButton.setOnAction(e -> {
+            genererTekst();
         });
 
         panel.getChildren().addAll(textArea, generateButton);
 
 
         //System.out.println(ordMap.toString());
-        Scene scene = new Scene(panel, 400, 240);
+        Scene scene = new Scene(panel, 800, 640);
         stage.setTitle("Oblig 2 - Tekstgenerator");
         stage.setScene(scene);
         stage.show();
@@ -57,7 +58,6 @@ public class Tekstgenerator extends Application {
     public void hentTekst(){
         // Fungerer fordi alle URLene er (nesten) like
 
-        int teller = 0;
         for(String link : linker){
             try {
                 //URL url = new URL("https://web01.usn.no/~lonnesta/kurs/kurs6124/Oblig/tekst/" + link + ".txt");
@@ -110,63 +110,73 @@ public class Tekstgenerator extends Application {
             sisteOrd.leggTilOrd(key.getOrd3()); // This will add the third word to SisteOrd
         }
     }
-    public String genererTekst(SisteOrd sisteOrd, int textLength) {
-        Random random = new Random();
-        String[] nyeOrd = hentOrd();
-        String ord1 = nyeOrd[0];
-        String ord2 = nyeOrd[1];
-        return genererTekst(sisteOrd, textLength, ord1, ord2, new StringBuilder());
+    private void genererTekst() {
+        ToOrd randomToOrd = getRandomToOrd(); // Get a random starting point from your toOrdMap
+        String generatedText = genererTekst(toOrdSamling, 1000, randomToOrd, "");
+
+        // Update the TextArea in your UI to display the generated text
+        textArea.setText(generatedText);
     }
 
-    private String genererTekst(SisteOrd sisteOrd, int lengde, String ord1, String ord2, StringBuilder genTekst) {
-        if (lengde == 0) {
-            return genTekst.toString();
+    public String genererTekst(Map<ToOrd, SisteOrd> toOrdMap, int textLength, ToOrd currentToOrd, String generatedText) {
+        if (textLength == 0) {
+            return generatedText;
         }
 
-        Random random = new Random();
-        ToOrd toOrd = new ToOrd(ord1, ord2);
-        SisteOrd currentSisteOrd = toOrdSamling.get(toOrd);
+        SisteOrd sisteOrd = toOrdMap.get(currentToOrd);
 
-        if (currentSisteOrd != null) {
-            LinkedList<String> ordListe = currentSisteOrd.getOrdListe();
-            LinkedList<Integer> tallListe = currentSisteOrd.getTallListe();
-            int totalTeller = tallListe.stream().mapToInt(Integer::intValue).sum();
-            int randomTeller = random.nextInt(totalTeller);
-            int kumTeller = 0;
-            String nesteOrd = null;
+        if (sisteOrd != null) {
+            LinkedList<String> ordListe = sisteOrd.getOrdListe();
+            LinkedList<Integer> tallListe = sisteOrd.getTallListe();
+
+            int totalCount = tallListe.stream().mapToInt(Integer::intValue).sum();
+            int randomCount = new Random().nextInt(totalCount);
+            int cumulativeCount = 0;
+            String nextWord = null;
 
             for (int j = 0; j < ordListe.size(); j++) {
-                kumTeller += tallListe.get(j);
-                if (kumTeller >= randomTeller) {
-                    nesteOrd = ordListe.get(j);
+                cumulativeCount += tallListe.get(j);
+                if (cumulativeCount >= randomCount) {
+                    nextWord = ordListe.get(j);
                     break;
                 }
             }
 
-            if (nesteOrd != null) {
-                genTekst.append(nesteOrd).append(" ");
-                return genererTekst(sisteOrd, lengde - 1, ord2, nesteOrd, genTekst);
+            if (nextWord != null) {
+                generatedText += nextWord + " ";
+                ToOrd nextToOrd = new ToOrd(currentToOrd.getOrd2(), nextWord);
+                return genererTekst(toOrdMap, textLength - 1, nextToOrd, generatedText);
             }
         }
 
-        // If no suitable word is found, return the generated text.
-        return genTekst.toString();
+        return generatedText;
     }
     public String[] hentOrd() {
-        if (ordMap.isEmpty()) {
+        if (toOrdSamling.isEmpty()) {
             return new String[]{"", ""}; // Handle the case where the map is empty.
         }
 
-        List<Ordsamling> keyListe = new ArrayList<>(ordMap.keySet());
+        ArrayList<ToOrd> keyListe = new ArrayList<>(toOrdSamling.keySet());
         Random random = new Random();
         int randomIndex = random.nextInt(keyListe.size());
 
-        Ordsamling randomOrdsamling = keyListe.get(randomIndex);
+        ToOrd randomToOrd = keyListe.get(randomIndex);
         String[] words = new String[2];
-        words[0] = randomOrdsamling.getOrd1();
-        words[1] = randomOrdsamling.getOrd2();
+        words[0] = randomToOrd.getOrd1();
+        words[1] = randomToOrd.getOrd2();
 
         return words;
+    }
+    private ToOrd getRandomToOrd() {
+        if (toOrdSamling.isEmpty()) {
+            return null; // Handle the case where the map is empty.
+        }
+
+        List<ToOrd> toOrdList = new ArrayList<>(toOrdSamling.keySet());
+        Random random = new Random();
+        int randomIndex = random.nextInt(toOrdList.size());
+
+        return toOrdList.get(randomIndex);
     }
 
 
